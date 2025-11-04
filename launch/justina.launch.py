@@ -21,8 +21,8 @@ def generate_launch_description():
 
     # robot_description: from robotino
     default_xacro = os.path.join(
-        get_package_share_directory('robotino_description'),
-        'urdf', 'robotino.urdf.xacro'
+        get_package_share_directory('justina_description'),
+        'urdf/robotino', 'robotino.urdf.xacro'
     )
     robot_description = DeclareLaunchArgument(
         'robot_description', default_value=default_xacro,
@@ -32,7 +32,7 @@ def generate_launch_description():
     included_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(
-                get_package_share_directory('robotino_node'),
+                get_package_share_directory('base'),
                 'launch', 'robotino_driver.launch.py'
             )
         ),
