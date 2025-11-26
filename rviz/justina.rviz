@@ -9,9 +9,7 @@ Panels:
   - Class: rviz_common/Selection
     Name: Selection
   - Class: rviz_common/Tool Properties
-    Expanded:
-      - /Publish Point1
-      - /2D Goal Pose1
+    Expanded: ~
     Name: Tool Properties
     Splitter Ratio: 0.5886790156364441
   - Class: rviz_common/Views
@@ -55,7 +53,7 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /hardware/robotino/robot_description
+        Value: /hardware/base/robot_description
       Enabled: true
       Links:
         All Links Enabled: true
@@ -63,7 +61,37 @@ Visualization Manager:
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
+        arm:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        camera_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        forearm:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        gripper_motors:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        head_link1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        head_link2:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -73,7 +101,84 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
+        left_arm:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        left_forearm:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        left_gripper_motors:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        left_jaw:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        left_left_jaw:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        left_right_jaw:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        left_shoulder_frame:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        neck_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         platform_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        right_arm_grip:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        right_jaw:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        shoulder_frame:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        shoulders_left_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        shoulders_right_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        spine_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        torso_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        tower_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -110,13 +215,33 @@ Visualization Manager:
         All Enabled: true
         base_link:
           Value: true
+        camera_link:
+          Value: true
+        gripper_motors:
+          Value: true
+        head_link1:
+          Value: true
         laser_link:
           Value: true
         map:
           Value: true
+        neck_link:
+          Value: true
         odom:
           Value: true
         platform_link:
+          Value: true
+        right_arm_grip:
+          Value: true
+        shoulders_left_link:
+          Value: true
+        shoulders_right_link:
+          Value: true
+        spine_link:
+          Value: true
+        torso_link:
+          Value: true
+        tower_link:
           Value: true
         wheel0_link:
           Value: true
@@ -136,6 +261,16 @@ Visualization Manager:
               laser_link:
                 {}
               platform_link:
+                {}
+              torso_link:
+                spine_link:
+                  head_link1:
+                    {}
+                  shoulders_left_link:
+                    {}
+                  shoulders_right_link:
+                    {}
+              tower_link:
                 {}
               wheel0_link:
                 {}
@@ -175,7 +310,7 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /hardware/robotino/scan
+        Value: /hardware/base/scan
       Use Fixed Frame: true
       Use rainbow: true
       Value: true
@@ -189,17 +324,17 @@ Visualization Manager:
       Name: Map
       Topic:
         Depth: 5
-        Durability Policy: Volatile
+        Durability Policy: Transient Local
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /augmented_map
+        Value: /navigation/map
       Update Topic:
         Depth: 5
-        Durability Policy: Volatile
+        Durability Policy: Transient Local
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /augmented_map_updates
+        Value: /navigation/map_updates
       Use Timestamp: false
       Value: true
     - Alpha: 0.699999988079071
@@ -216,13 +351,13 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /map
+        Value: /navigation/augmented_map
       Update Topic:
         Depth: 5
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /map_updates
+        Value: /navigation/augmented_map_updates
       Use Timestamp: false
       Value: true
     - Alpha: 1
@@ -251,7 +386,7 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /simple_move/goal_path
+        Value: /navigation/simple_move/goal_path
       Value: true
   Enabled: true
   Global Options:
@@ -276,7 +411,7 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /initialpose
+        Value: /navigation/initialpose
     - Class: rviz_default_plugins/PublishPoint
       Single click: true
       Topic:
@@ -284,14 +419,14 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /clicked_point
+        Value: /navigation/clicked_point
     - Class: rviz_default_plugins/SetGoal
       Topic:
         Depth: 5
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /move_base_simple/goal
+        Value: /nav_control/goal
   Transformation:
     Current:
       Class: rviz_default_plugins/TF
@@ -299,7 +434,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 3.795172929763794
+      Distance: 6.68839168548584
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -314,10 +449,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.309794306755066
+      Pitch: 0.6397949457168579
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 4.91042947769165
+      Yaw: 4.670413017272949
     Saved: ~
 Window Geometry:
   Displays:
