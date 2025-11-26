@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- ===================== -->
+  <!--   Launch Arguments    -->
+  <!-- ===================== -->
+  <arg name="namespace_hardware"
+       default="hardware"
+       />
+
+  <arg name="use_sim_time"
+       default="false"
+       />
+
+  <arg name="namespace_navigation"
+       default="navigation"
+       />
+
+  <arg name="use_nav"
+       default="true"
+       />
+
+
+  <!-- ===================== -->
+  <!--   Hardware Launch     -->
+  <!-- ===================== -->
+  <include file="$(find-pkg-share hardware_tools)/launch/hardware.launch.xml">
+    <arg name="namespace" value="$(var namespace_hardware)"/>
+    <!-- Si tu hardware.launch.xml tuviera más args, se pasan aquí -->
+    <!-- <arg name="use_sim_time" value="$(var use_sim_time)"/> -->
+  </include>
+
+
+  <!-- ===================== -->
+  <!--   Navigation Launch   -->
+  <!-- ===================== -->
+  <include file="$(find-pkg-share navigation_tools)/launch/navigation.launch.xml"
+           if="$(var use_nav)">
+    <arg name="namespace_nav" value="$(var namespace_navigation)"/>
+    <arg name="use_sim_time" value="$(var use_sim_time)"/>
+  </include>
+
+
+  <!-- ===================== -->
+  <!--        RViz2          -->
+  <!-- ===================== -->
+  <node pkg="rviz2"
+        exec="rviz2"
+        name="rviz2"
+        output="screen"
+        args="-d $(find-pkg-share surge_et_ambula)/rviz/justina.rviz">
+  </node>
+
+</launch>
