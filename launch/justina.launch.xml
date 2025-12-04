@@ -40,6 +40,10 @@
     <arg name="use_sim_time" value="$(var use_sim_time)"/>
   </include>
 
+  <!-- ===================== -->
+  <!--      HRI Launch       -->
+  <!-- ===================== -->
+  <include file="$(find-pkg-share hri_tools)/launch/HRI.launch.xml">
 
   <!-- ===================== -->
   <!--        RViz2          -->
