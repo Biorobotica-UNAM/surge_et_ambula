@@ -43,7 +43,7 @@
   <!-- ===================== -->
   <!--      HRI Launch       -->
   <!-- ===================== -->
-  <include file="$(find-pkg-share hri_tools)/launch/HRI.launch.xml"/>
+  <include file="$(find-pkg-share hri_tools)/launch/hri.launch.xml"/>
 
   <!-- ===================== -->
   <!--        RViz2          -->
