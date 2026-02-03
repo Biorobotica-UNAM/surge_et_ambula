@@ -22,12 +22,16 @@
 
 
   <!-- ===================== -->
+  <!--   Supervisor Launch   -->
+  <!-- ===================== -->
+  <include file="$(find-pkg-share supervisor_manager)/launch/supervisor.launch.xml"/>
+
+
+  <!-- ===================== -->
   <!--   Hardware Launch     -->
   <!-- ===================== -->
   <include file="$(find-pkg-share hardware_tools)/launch/hardware.launch.xml">
     <arg name="namespace" value="$(var namespace_hardware)"/>
-    <!-- Si tu hardware.launch.xml tuviera más args, se pasan aquí -->
-    <!-- <arg name="use_sim_time" value="$(var use_sim_time)"/> -->
   </include>
 
 
@@ -40,10 +44,18 @@
     <arg name="use_sim_time" value="$(var use_sim_time)"/>
   </include>
 
+
   <!-- ===================== -->
   <!--      HRI Launch       -->
   <!-- ===================== -->
   <include file="$(find-pkg-share hri_tools)/launch/hri.launch.xml"/>
+
+
+  <!-- ===================== -->
+  <!--      Planner Launch   -->
+  <!-- ===================== -->
+  <include file="$(find-pkg-share clips_launch)/launch/clips_launch.launch.xml"/>
+
 
   <!-- ===================== -->
   <!--        RViz2          -->
