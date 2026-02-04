@@ -52,9 +52,14 @@
 
 
   <!-- ===================== -->
-  <!--      Planner Launch   -->
+  <!--      Planning Launch   -->
   <!-- ===================== -->
   <include file="$(find-pkg-share clips_launch)/launch/clips_launch.launch.xml"/>
+  
+  <!-- ===================== -->
+  <!--      Executor Launch   -->
+  <!-- ===================== -->
+  <include file="$(find-pkg-share executor_tools)/launch/executor.launch.xml"/>
 
 
   <!-- ===================== -->
