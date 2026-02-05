@@ -54,7 +54,7 @@
   <!-- ===================== -->
   <!--      Planning Launch   -->
   <!-- ===================== -->
-  <include file="$(find-pkg-share clips_launch)/launch/clips_launch.launch.xml"/>
+  <include file="$(find-pkg-share planning_tools)/launch/planning.launch.xml"/>
   
   <!-- ===================== -->
   <!--      Executor Launch   -->
