@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- ===================== -->
+  <!--   Global Arguments    -->
+  <!-- ===================== -->
+
+  <arg name="use_sim_time" default="false"/>
+
+  <arg name="namespace_supervisor"   default="supervisor"/>
+  <arg name="namespace_executor"     default="executor"/>
+  <arg name="namespace_planning"     default="planning"/>
+  <arg name="namespace_navigation"   default="navigation"/>
+  <arg name="namespace_manipulation" default="manipulation"/>
+  <arg name="namespace_hardware"     default="hardware"/>
+  <arg name="namespace_hri"          default="hri"/>
+
+  <arg name="use_nav" default="true"/>
+
+  <!-- ===================== -->
+  <!--      Supervisor       -->
+  <!-- ===================== -->
+ 
+  <!-- ===================== -->
+  <!--       Executor        -->
+  <!-- ===================== -->
+
+
+  <!-- ===================== -->
+  <!--       Planning        -->
+  <!-- ===================== -->
+
+
+  <!-- ===================== -->
+  <!--      Navigation       -->
+  <!-- ===================== -->
+  <include file="$(find-pkg-share navigation_start)/launch/navigation_takeshi.launch.xml"
+           if="$(var use_nav)">
+    <arg name="namespace_nav" value="$(var namespace_navigation)"/>
+    <arg name="use_sim_time" value="$(var use_sim_time)"/>
+  </include>
+
+  <!-- ===================== -->
+  <!--     Manipulation      -->
+  <!-- ===================== -->
+
+
+  <!-- ===================== -->
+  <!--       Hardware        -->
+  <!-- ===================== -->
+
+
+  <!-- ===================== -->
+  <!--         HRI           -->
+  <!-- ===================== -->
+
+
+  <!-- ===================== -->
+  <!--        RViz2          -->
+  <!-- ===================== -->
+  <node pkg="rviz2"
+        exec="rviz2"
+        name="rviz2"
+        output="screen"
+        args="-d $(find-pkg-share surge_et_ambula)/rviz/justina.rviz">
+      <remap from="/hardware/base/robot_description" to="/robot_description"/>
+  </node>
+
+</launch>
+
