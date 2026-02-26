@@ -20,16 +20,24 @@
   <!-- ===================== -->
   <!--      Supervisor       -->
   <!-- ===================== -->
+  <include file="$(find-pkg-share supervisor_manager)/launch/supervisor.launch.xml">
+    <arg name="namespace" value="$(var namespace_supervisor)"/>
+  </include>
  
   <!-- ===================== -->
   <!--       Executor        -->
   <!-- ===================== -->
-
+  <include file="$(find-pkg-share executor_tools)/launch/executor.launch.xml">
+    <arg name="namespace" value="$(var namespace_executor)"/>
+  </include>
 
   <!-- ===================== -->
   <!--       Planning        -->
   <!-- ===================== -->
-
+  <include file="$(find-pkg-share planning_tools)/launch/planning.launch.xml">
+    <arg name="namespace" value="$(var namespace_planning)"/>
+    <arg name="use_sim_time" value="$(var use_sim_time)"/>
+  </include>
 
   <!-- ===================== -->
   <!--      Navigation       -->
@@ -48,12 +56,16 @@
   <!-- ===================== -->
   <!--       Hardware        -->
   <!-- ===================== -->
-
+  <!-- <include file="$(find-pkg-share hardware_tools)/launch/hardware_takeshi.launch.xml">
+    <arg name="namespace" value="$(var namespace_hardware)"/>
+  </include> -->
 
   <!-- ===================== -->
   <!--         HRI           -->
   <!-- ===================== -->
-
+  <include file="$(find-pkg-share hri_tools)/launch/hri.launch.xml">
+    <arg name="namespace" value="$(var namespace_hri)"/>
+  </include>
 
   <!-- ===================== -->
   <!--        RViz2          -->
