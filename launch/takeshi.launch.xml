@@ -48,6 +48,20 @@
     <arg name="use_sim_time" value="$(var use_sim_time)"/>
   </include>
 
+    <node
+      pkg="locations_manager"
+      exec="locations_manager_node"
+      name="locations_manager_node"
+      output="screen"
+    />
+
+    <node
+      pkg="nav_controller"
+      exec="nav_controller_node"
+      name="nav_controller_node"
+      output="screen"
+      />
+
   <!-- ===================== -->
   <!--     Manipulation      -->
   <!-- ===================== -->
@@ -65,6 +79,7 @@
   <!-- ===================== -->
   <include file="$(find-pkg-share hri_tools)/launch/hri.launch.xml">
     <arg name="namespace" value="$(var namespace_hri)"/>
+    <arg name="use_talker" value="false"/>
   </include>
 
   <!-- ===================== -->
