@@ -70,9 +70,10 @@
   <!-- ===================== -->
   <!--       Hardware        -->
   <!-- ===================== -->
-  <!-- <include file="$(find-pkg-share hardware_tools)/launch/hardware_takeshi.launch.xml">
+  <include file="$(find-pkg-share hardware_tools)/launch/hardware.launch.xml">
     <arg name="namespace" value="$(var namespace_hardware)"/>
-  </include> -->
+    <arg name="use_takeshi" value="true"/>
+  </include>
 
   <!-- ===================== -->
   <!--         HRI           -->
