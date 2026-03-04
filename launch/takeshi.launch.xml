@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- ===================== -->
+  <!--   Global Arguments    -->
+  <!-- ===================== -->
+
+  <arg name="use_sim_time" default="false"/>
+
+  <arg name="namespace_supervisor"   default="supervisor"/>
+  <arg name="namespace_executor"     default="executor"/>
+  <arg name="namespace_planning"     default="planning"/>
+  <arg name="namespace_navigation"   default="navigation"/>
+  <arg name="namespace_manipulation" default="manipulation"/>
+  <arg name="namespace_hardware"     default="hardware"/>
+  <arg name="namespace_hri"          default="hri"/>
+
+  <arg name="use_nav" default="true"/>
+
+  <!-- ===================== -->
+  <!--      Supervisor       -->
+  <!-- ===================== -->
+  <include file="$(find-pkg-share supervisor_manager)/launch/supervisor.launch.xml">
+    <arg name="namespace" value="$(var namespace_supervisor)"/>
+  </include>
+ 
+  <!-- ===================== -->
+  <!--       Executor        -->
+  <!-- ===================== -->
+  <include file="$(find-pkg-share executor_tools)/launch/executor.launch.xml">
+    <arg name="namespace" value="$(var namespace_executor)"/>
+  </include>
+
+  <!-- ===================== -->
+  <!--       Planning        -->
+  <!-- ===================== -->
+  <include file="$(find-pkg-share planning_tools)/launch/planning.launch.xml">
+    <arg name="namespace" value="$(var namespace_planning)"/>
+    <arg name="use_sim_time" value="$(var use_sim_time)"/>
+  </include>
+
+  <!-- ===================== -->
+  <!--      Navigation       -->
+  <!-- ===================== -->
+  <include file="$(find-pkg-share navigation_start)/launch/navigation_takeshi.launch.xml"
+           if="$(var use_nav)">
+    <arg name="namespace_nav" value="$(var namespace_navigation)"/>
+    <arg name="use_sim_time" value="$(var use_sim_time)"/>
+  </include>
+
+    <node
+      pkg="locations_manager"
+      exec="locations_manager_node"
+      name="locations_manager_node"
+      output="screen"
+    />
+
+    <node
+      pkg="nav_controller"
+      exec="nav_controller_node"
+      name="nav_controller_node"
+      output="screen"
+      />
+
+  <!-- ===================== -->
+  <!--     Manipulation      -->
+  <!-- ===================== -->
+
+
+  <!-- ===================== -->
+  <!--       Hardware        -->
+  <!-- ===================== -->
+  <include file="$(find-pkg-share hardware_tools)/launch/hardware.launch.xml">
+    <arg name="namespace" value="$(var namespace_hardware)"/>
+    <arg name="use_takeshi" value="true"/>
+  </include>
+
+  <!-- ===================== -->
+  <!--         HRI           -->
+  <!-- ===================== -->
+  <include file="$(find-pkg-share hri_tools)/launch/hri.launch.xml">
+    <arg name="namespace" value="$(var namespace_hri)"/>
+    <arg name="use_talker" value="false"/>
+  </include>
+
+  <!-- ===================== -->
+  <!--        RViz2          -->
+  <!-- ===================== -->
+  <node pkg="rviz2"
+        exec="rviz2"
+        name="rviz2"
+        output="screen"
+        args="-d $(find-pkg-share surge_et_ambula)/rviz/justina.rviz">
+      <remap from="/hardware/base/robot_description" to="/robot_description"/>
+  </node>
+
+</launch>
+
