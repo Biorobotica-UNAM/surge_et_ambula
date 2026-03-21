@@ -14,6 +14,7 @@
   <arg name="namespace_manipulation" default="manipulation"/>
   <arg name="namespace_hardware"     default="hardware"/>
   <arg name="namespace_hri"          default="hri"/>
+  <arg name="namespace_vision"          default="vision"/>
 
   <arg name="use_nav" default="true"/>
 
@@ -91,6 +92,14 @@
   <include file="$(find-pkg-share hri_tools)/launch/human_detector.launch.xml"/>
 
   <include file="$(find-pkg-share human_follower)/launch/human_follower.launch.xml"/>
+
+
+  <!-- ===================== -->
+  <!--       Vision          -->
+  <!-- ===================== -->
+  <include file="$(find-pkg-share vision_tools)/launch/vision.launch.xml">
+    <arg name="namespace" value="$(var namespace_vision)"/>
+  </include>
 
   <!-- ===================== -->
   <!--        RViz2          -->
