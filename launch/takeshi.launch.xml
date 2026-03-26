@@ -75,11 +75,7 @@
     <arg name="namespace" value="$(var namespace_hardware)"/>
     <arg name="use_takeshi" value="true"/>
   </include>
-  <node pkg="hsr_hardware"
-        exec="head_control_node"
-        name="head_control_node"
-        output="screen">
-  </node>
+
 
 
   <!-- ===================== -->
