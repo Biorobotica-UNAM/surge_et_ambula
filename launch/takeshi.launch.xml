@@ -15,6 +15,7 @@
   <arg name="namespace_hardware"     default="hardware"/>
   <arg name="namespace_hri"          default="hri"/>
   <arg name="namespace_vision"          default="vision"/>
+  <arg name="namespace_tasks"          default="tasks"/>
 
   <arg name="use_nav" default="true"/>
 
@@ -97,6 +98,13 @@
     <arg name="namespace" value="$(var namespace_vision)"/>
   </include>
 
+
+  <!-- ===================== -->
+  <!--       Tasks          -->
+  <!-- ===================== -->
+<include file="$(find-pkg-share executor_tools)/launch/tasks.launch.xml">
+  <arg name="namespace" value="$(var namespace_tasks)"/>
+</include>
   <!-- ===================== -->
   <!--        RViz2          -->
   <!-- ===================== -->
