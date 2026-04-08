@@ -18,6 +18,7 @@
   <arg name="namespace_tasks"          default="tasks"/>
 
   <arg name="use_nav" default="true"/>
+  <arg name="use_takeshi" default="true"/>
 
   <!-- ===================== -->
   <!--      Supervisor       -->
@@ -74,7 +75,7 @@
   <!-- ===================== -->
   <include file="$(find-pkg-share hardware_tools)/launch/hardware.launch.xml">
     <arg name="namespace" value="$(var namespace_hardware)"/>
-    <arg name="use_takeshi" value="true"/>
+    <arg name="use_takeshi" value="$(var use_takeshi)"/>
   </include>
 
 
@@ -84,7 +85,7 @@
   <!-- ===================== -->
   <include file="$(find-pkg-share hri_tools)/launch/hri.launch.xml">
     <arg name="namespace" value="$(var namespace_hri)"/>
-    <arg name="use_talker" value="false"/>
+    <arg name="use_takeshi" value="$(var use_takeshi)"/>
   </include>
   <include file="$(find-pkg-share hri_tools)/launch/human_detector.launch.xml"/>
 
