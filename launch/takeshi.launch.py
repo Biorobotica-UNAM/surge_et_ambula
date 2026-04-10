@@ -112,14 +112,14 @@ def generate_launch_description():
         ),
 
         Node(
-            pkg='locations_manager',
+            package='locations_manager',
             executable='locations_manager_node',
             name='locations_manager_node',
             output='screen'
         ),
 
         Node(
-            pkg='nav_controller',
+            package='nav_controller',
             executable='nav_controller_node',
             name='nav_controller_node',
             output='screen'
@@ -186,7 +186,7 @@ def generate_launch_description():
     # =====================
     stage_rviz = GroupAction([
         Node(
-            pkg='rviz2',
+            package='rviz2',
             executable='rviz2',
             name='rviz2',
             output='screen',
