@@ -45,11 +45,20 @@
   <!-- ===================== -->
   <!--      Navigation       -->
   <!-- ===================== -->
+  
   <include file="$(find-pkg-share navigation_start)/launch/navigation_takeshi.launch.xml"
            if="$(var use_nav)">
     <arg name="namespace_nav" value="$(var namespace_navigation)"/>
     <arg name="use_sim_time" value="$(var use_sim_time)"/>
   </include>
+
+
+ <!-- <include file="$(find-pkg-share navigation_start)/launch/slam_navigation_takeshi.launch.xml"
+           if="$(var use_nav)">
+    <arg name="namespace_nav" value="$(var namespace_navigation)"/>
+    <arg name="use_sim_time" value="$(var use_sim_time)"/>
+    <arg name="use_slam" value="true"/>
+  </include> -->
 
     <node
       pkg="locations_manager"
@@ -87,9 +96,7 @@
     <arg name="namespace" value="$(var namespace_hri)"/>
     <arg name="use_takeshi" value="$(var use_takeshi)"/>
   </include>
-  <include file="$(find-pkg-share hri_tools)/launch/human_detector.launch.xml"/>
 
-  <include file="$(find-pkg-share human_follower)/launch/human_follower.launch.xml"/>
 
 
   <!-- ===================== -->
