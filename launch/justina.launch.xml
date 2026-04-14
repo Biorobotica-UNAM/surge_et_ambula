@@ -14,6 +14,8 @@
   <arg name="namespace_manipulation" default="manipulation"/>
   <arg name="namespace_hardware"     default="hardware"/>
   <arg name="namespace_hri"          default="hri"/>
+  <arg name="namespace_vision"          default="vision"/>
+  <arg name="namespace_tasks"          default="tasks"/>
 
   <arg name="use_nav" default="true"/>
 
@@ -29,6 +31,9 @@
   <!-- ===================== -->
   <include file="$(find-pkg-share executor_tools)/launch/executor.launch.xml">
     <arg name="namespace" value="$(var namespace_executor)"/>
+  </include>
+  <include file="$(find-pkg-share executor_tools)/launch/tasks.launch.xml">
+    <arg name="namespace" value="$(var namespace_tasks)"/>
   </include>
 
   <!-- ===================== -->
@@ -67,6 +72,13 @@
   <!-- ===================== -->
   <include file="$(find-pkg-share hri_tools)/launch/hri.launch.xml">
     <arg name="namespace" value="$(var namespace_hri)"/>
+  </include>
+
+  <!-- ===================== -->
+  <!--        Vision         -->
+  <!-- ===================== -->
+  <include file="$(find-pkg-share vision_tools)/launch/vision.launch.xml">
+    <arg name="namespace" value="$(var namespace_vision)"/>
   </include>
 
   <!-- ===================== -->
