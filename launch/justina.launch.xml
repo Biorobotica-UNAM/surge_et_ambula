@@ -32,9 +32,6 @@
   <include file="$(find-pkg-share executor_tools)/launch/executor.launch.xml">
     <arg name="namespace" value="$(var namespace_executor)"/>
   </include>
-  <include file="$(find-pkg-share executor_tools)/launch/tasks.launch.xml">
-    <arg name="namespace" value="$(var namespace_tasks)"/>
-  </include>
 
   <!-- ===================== -->
   <!--       Planning        -->
