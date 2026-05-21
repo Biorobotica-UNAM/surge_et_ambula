@@ -16,6 +16,7 @@
   <arg name="namespace_hri"          default="hri"/>
   <arg name="namespace_vision"          default="vision"/>
   <arg name="namespace_tasks"          default="tasks"/>
+  <arg name="namespace_knowledge"          default="knowledge"/>
 
   <arg name="use_nav" default="true"/>
 
@@ -77,6 +78,14 @@
   <include file="$(find-pkg-share vision_tools)/launch/vision.launch.xml">
     <arg name="namespace" value="$(var namespace_vision)"/>
   </include>
+
+  <!-- ===================== -->
+  <!--      Knowledge        -->
+  <!-- ===================== -->
+  <include file="$(find-pkg-share knowledge_tools)/launch/knowledge.launch.xml">
+    <arg name="namespace" value="$(var namespace_knowledge)"/>
+  </include>
+
 
   <!-- ===================== -->
   <!--        RViz2          -->
