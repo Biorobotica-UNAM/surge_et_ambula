@@ -25,7 +25,7 @@
       - Publica /hardware/base/odom.
       - Publica TF odom -> base_link.
       - Publica /hardware/joint_states.
-      - Publica /hardware/base/scan.
+      - Publica /hardware/base/scan simulado contra /navigation/map.
 
     Por default usa tiempo real, igual que el launch fisico. Mantener un solo
     reloj evita TF_OLD_DATA cuando se mezclan nodos de navegacion, HRI o
@@ -44,13 +44,22 @@
   <arg name="namespace_knowledge"    default="knowledge"/>
 
   <arg name="use_nav" default="true"/>
+  <arg name="nav_use_lidar" default="true"/>
+  <arg name="nav_laser_min_x" default="0.20"/>
+  <arg name="nav_laser_max_x" default="0.35"/>
+  <arg name="nav_laser_min_y" default="-0.22"/>
+  <arg name="nav_laser_max_y" default="0.22"/>
   <arg name="use_manipulation" default="false"/>
   <arg name="use_vision" default="false"/>
   <arg name="use_hri" default="false"/>
 
-  <arg name="initial_x" default="6.5"/>
-  <arg name="initial_y" default="3.2"/>
-  <arg name="initial_yaw" default="0.0"/>
+  <arg name="initial_x" default="0.0"/>
+  <arg name="initial_y" default="0.0"/>
+  <arg name="initial_yaw" default="0.013"/>
+  <arg name="laser_beams" default="361"/>
+  <arg name="laser_range_max" default="6.0"/>
+  <arg name="laser_unknown_is_obstacle" default="false"/>
+  <arg name="laser_publish_max_range" default="false"/>
 
   <let name="justina_share" value="$(find-pkg-share justina_description)"/>
 
@@ -63,6 +72,10 @@
     <param name="initial_x" value="$(var initial_x)"/>
     <param name="initial_y" value="$(var initial_y)"/>
     <param name="initial_yaw" value="$(var initial_yaw)"/>
+    <param name="laser_beams" value="$(var laser_beams)"/>
+    <param name="laser_range_max" value="$(var laser_range_max)"/>
+    <param name="laser_unknown_is_obstacle" value="$(var laser_unknown_is_obstacle)"/>
+    <param name="laser_publish_max_range" value="$(var laser_publish_max_range)"/>
   </node>
 
   <!-- Publica el modelo del robot y el arbol TF fijo/movil del URDF. -->
@@ -80,7 +93,8 @@
   <node pkg="tf2_ros"
         exec="static_transform_publisher"
         name="map_to_odom"
-        args="--x 0 --y 0 --z 0 --roll 0 --pitch 0 --yaw 0 --frame-id map --child-frame-id odom">
+        args="--x 0 --y 0 --z 0 --roll 0 --pitch 0 --yaw 0 --frame-id map --child-frame-id odom"
+        unless="$(var use_nav)">
     <param name="use_sim_time" value="$(var use_sim_time)"/>
   </node>
 
@@ -100,13 +114,25 @@
     <arg name="use_sim_time" value="$(var use_sim_time)"/>
   </include>
 
-  <!-- Navigation: usa lidar simulado y desactiva point cloud/Kinect por ahora. -->
+  <!--
+    El laser simulado se usa como obstaculo local con una caja frontal pequena.
+    Si los pasillos quedan muy cerrados, reduce nav_laser_max_x/nav_laser_max_y
+    o lanza nav_use_lidar:=false para usar solo el mapa estatico.
+  -->
+  <!-- Navigation: usa el laser simulado y desactiva point cloud/Kinect por ahora. -->
   <include file="$(find-pkg-share navigation_tools)/launch/navigation.launch.xml"
            if="$(var use_nav)">
     <arg name="namespace" value="$(var namespace_navigation)"/>
     <arg name="use_sim_time" value="$(var use_sim_time)"/>
-    <arg name="use_lidar" value="true"/>
+    <arg name="use_lidar" value="$(var nav_use_lidar)"/>
     <arg name="use_point_cloud" value="false"/>
+    <arg name="laser_min_x" value="$(var nav_laser_min_x)"/>
+    <arg name="laser_max_x" value="$(var nav_laser_max_x)"/>
+    <arg name="laser_min_y" value="$(var nav_laser_min_y)"/>
+    <arg name="laser_max_y" value="$(var nav_laser_max_y)"/>
+    <arg name="initial_pose_x" value="$(var initial_x)"/>
+    <arg name="initial_pose_y" value="$(var initial_y)"/>
+    <arg name="initial_pose_yaw" value="$(var initial_yaw)"/>
   </include>
 
   <!-- Manipulation suele cargar MoveIt y sensores 3D; apagado por default en sim. -->
