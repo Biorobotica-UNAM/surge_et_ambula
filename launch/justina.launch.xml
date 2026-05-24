@@ -47,7 +47,7 @@
   <!-- ===================== -->
   <include file="$(find-pkg-share navigation_tools)/launch/navigation.launch.xml"
            if="$(var use_nav)">
-    <arg name="namespace_nav" value="$(var namespace_navigation)"/>
+    <arg name="namespace" value="$(var namespace_navigation)"/>
     <arg name="use_sim_time" value="$(var use_sim_time)"/>
   </include>
 
@@ -97,4 +97,3 @@
         args="-d $(find-pkg-share surge_et_ambula)/rviz/justina.rviz"/>
 
 </launch>
-
