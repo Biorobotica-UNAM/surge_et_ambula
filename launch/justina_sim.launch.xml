@@ -42,13 +42,16 @@
   <arg name="namespace_hri"          default="hri"/>
   <arg name="namespace_vision"       default="vision"/>
   <arg name="namespace_knowledge"    default="knowledge"/>
+  <arg name="namespace_hardware"     default="hardware"/>
 
   <arg name="use_nav" default="true"/>
   <arg name="nav_use_lidar" default="true"/>
+  <arg name="nav_use_point_cloud" default="false"/>
   <arg name="nav_laser_min_x" default="0.20"/>
   <arg name="nav_laser_max_x" default="0.35"/>
   <arg name="nav_laser_min_y" default="-0.22"/>
   <arg name="nav_laser_max_y" default="0.22"/>
+  <arg name="use_kinect" default="true"/>
   <arg name="use_manipulation" default="false"/>
   <arg name="use_vision" default="false"/>
   <arg name="use_hri" default="false"/>
@@ -89,6 +92,12 @@
     <remap from="robot_description" to="/hardware/robot_description"/>
   </node>
 
+  <!-- Kinect real montado en el arbol TF de Justina; publica /hardware/camera/points. -->
+  <group if="$(var use_kinect)">
+    <push_ros_namespace namespace="$(var namespace_hardware)"/>
+    <include file="$(find-pkg-share kinect_ros2)/launch/kinect.launch.xml"/>
+  </group>
+
   <!-- Une el mapa global con la odometria simulada: map -> odom -> base_link. -->
   <node pkg="tf2_ros"
         exec="static_transform_publisher"
@@ -119,13 +128,13 @@
     Si los pasillos quedan muy cerrados, reduce nav_laser_max_x/nav_laser_max_y
     o lanza nav_use_lidar:=false para usar solo el mapa estatico.
   -->
-  <!-- Navigation: usa el laser simulado y desactiva point cloud/Kinect por ahora. -->
+  <!-- Navigation: usa el laser simulado; la nube real queda opcional para obstaculos. -->
   <include file="$(find-pkg-share navigation_tools)/launch/navigation.launch.xml"
            if="$(var use_nav)">
     <arg name="namespace" value="$(var namespace_navigation)"/>
     <arg name="use_sim_time" value="$(var use_sim_time)"/>
     <arg name="use_lidar" value="$(var nav_use_lidar)"/>
-    <arg name="use_point_cloud" value="false"/>
+    <arg name="use_point_cloud" value="$(var nav_use_point_cloud)"/>
     <arg name="laser_min_x" value="$(var nav_laser_min_x)"/>
     <arg name="laser_max_x" value="$(var nav_laser_max_x)"/>
     <arg name="laser_min_y" value="$(var nav_laser_min_y)"/>
