@@ -53,7 +53,7 @@
   <arg name="nav_laser_max_y" default="0.22"/>
   <arg name="use_kinect" default="true"/>
   <arg name="use_manipulation" default="false"/>
-  <arg name="use_vision" default="false"/>
+  <arg name="use_vision" default="true"/>
   <arg name="use_hri" default="true"/>
 
   <arg name="initial_x" default="0.0"/>
