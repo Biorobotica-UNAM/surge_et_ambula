@@ -52,6 +52,7 @@
   <arg name="nav_laser_min_y" default="-0.22"/>
   <arg name="nav_laser_max_y" default="0.22"/>
   <arg name="use_kinect" default="true"/>
+  <arg name="use_kinect_motor" default="true"/>
   <arg name="use_manipulation" default="false"/>
   <arg name="use_vision" default="true"/>
   <arg name="use_hri" default="true"/>
@@ -97,6 +98,17 @@
     <push_ros_namespace namespace="$(var namespace_hardware)"/>
     <include file="$(find-pkg-share kinect_ros2)/launch/kinect.launch.xml"/>
   </group>
+
+  <!-- Motor fisico de tilt del Kinect. Escucha /hardware/head/current_pose. -->
+  <node pkg="justina_description"
+        exec="kinect_tilt_motor_node.py"
+        name="kinect_tilt_motor_node"
+        output="screen"
+        if="$(var use_kinect_motor)">
+    <param name="head_pose_topic" value="/hardware/head/current_pose"/>
+    <param name="invert_tilt" value="false"/>
+    <param name="angle_offset_deg" value="0.0"/>
+  </node>
 
   <!-- Une el mapa global con la odometria simulada: map -> odom -> base_link. -->
   <node pkg="tf2_ros"
