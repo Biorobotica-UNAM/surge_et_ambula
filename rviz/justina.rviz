@@ -736,7 +736,7 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /vision/camera/table_drop_markers
+        Value: /vision/camera/drop_markers
       Value: true
   Enabled: true
   Global Options:
