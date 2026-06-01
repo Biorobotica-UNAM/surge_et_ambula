@@ -64,7 +64,7 @@
   <arg name="initial_yaw" default="0.013"/>
   <arg name="laser_beams" default="361"/>
   <arg name="laser_range_max" default="6.0"/>
-  <arg name="laser_unknown_is_obstacle" default="false"/>
+  <arg name="laser_unknown_is_obstacle" default="true"/>
   <arg name="laser_publish_max_range" default="false"/>
 
   <let name="justina_share" value="$(find-pkg-share justina_description)"/>

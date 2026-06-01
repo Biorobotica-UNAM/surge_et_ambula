@@ -28,6 +28,10 @@
   <arg name="use_lidar" default="true"/>
   <arg name="use_point_cloud" default="true"/>
   <arg name="use_pot_fields" default="true"/>
+<<<<<<< HEAD
+=======
+  <arg name="use_vision" default="false"/>
+>>>>>>> 7653b4e80ab7afa47dffd8e715d24e9a643b86b5
   <arg name="use_rviz" default="true"/>
 
   <arg name="rviz_config" default="$(find-pkg-share navigation_start)/rviz/kinect_obstacle_debug.rviz"/>
@@ -35,6 +39,11 @@
   <arg name="cloud_filter_input_qos_mode" default="dual"/>
 
    <!-- La nube filtrada ya es compacta; estos valores hacen mas reactiva
+       la capa local sin tocar el launch normal de Justina. -->
+  <arg name="cloud_downsampling" default="1"/>
+  <arg name="cloud_points_threshold" default="20"/>
+
+  <!-- La nube filtrada ya es compacta; estos valores hacen mas reactiva
        la capa local sin tocar el launch normal de Justina. -->
   <arg name="cloud_downsampling" default="1"/>
   <arg name="cloud_points_threshold" default="20"/>
@@ -79,8 +88,11 @@
     <arg name="use_pot_fields" value="$(var use_pot_fields)"/>
     <arg name="cloud_downsampling" value="$(var cloud_downsampling)"/>
     <arg name="cloud_points_threshold" value="$(var cloud_points_threshold)"/>
+<<<<<<< HEAD
     <arg name="raw_point_cloud_topic" value="$(var raw_point_cloud_topic)"/>
     <arg name="cloud_filter_input_qos_mode" value="$(var cloud_filter_input_qos_mode)"/>
+=======
+>>>>>>> 7653b4e80ab7afa47dffd8e715d24e9a643b86b5
     <arg name="laser_min_x" value="$(var laser_min_x)"/>
     <arg name="laser_max_x" value="$(var laser_max_x)"/>
     <arg name="laser_min_y" value="$(var laser_min_y)"/>
