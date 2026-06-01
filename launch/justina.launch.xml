@@ -48,6 +48,7 @@
   <include file="$(find-pkg-share navigation_tools)/launch/navigation.launch.xml"
            if="$(var use_nav)">
     <arg name="namespace" value="$(var namespace_navigation)"/>
+    <arg name="namespace_hardware" value="$(var namespace_hardware)"/>
     <arg name="use_sim_time" value="$(var use_sim_time)"/>
   </include>
 
