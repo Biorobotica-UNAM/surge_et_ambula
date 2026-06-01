@@ -27,7 +27,6 @@
   <arg name="use_nav" default="true"/>
   <arg name="use_lidar" default="true"/>
   <arg name="use_point_cloud" default="true"/>
-  <arg name="use_vision" default="false"/>
   <arg name="use_rviz" default="true"/>
 
   <arg name="rviz_config" default="$(find-pkg-share navigation_start)/rviz/kinect_obstacle_debug.rviz"/>
@@ -72,15 +71,6 @@
     <arg name="laser_max_x" value="$(var laser_max_x)"/>
     <arg name="laser_min_y" value="$(var laser_min_y)"/>
     <arg name="laser_max_y" value="$(var laser_max_y)"/>
-  </include>
-
-  <!-- Vision no es necesaria para evadir obstaculos: cloud_filter usa la nube
-       cruda del Kinect desde hardware. Se deja opcional para pruebas donde
-       tambien quieras correr reconocimiento, pero apagada por default para no
-       cargar CPU ni competir por /hardware/camera/points. -->
-  <include file="$(find-pkg-share vision_tools)/launch/vision.launch.xml"
-           if="$(var use_vision)">
-    <arg name="namespace" value="$(var namespace_vision)"/>
   </include>
 
   <node pkg="rviz2"
