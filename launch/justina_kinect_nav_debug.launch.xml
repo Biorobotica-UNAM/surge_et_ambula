@@ -28,10 +28,7 @@
   <arg name="use_lidar" default="true"/>
   <arg name="use_point_cloud" default="true"/>
   <arg name="use_pot_fields" default="true"/>
-<<<<<<< HEAD
-=======
   <arg name="use_vision" default="false"/>
->>>>>>> 7653b4e80ab7afa47dffd8e715d24e9a643b86b5
   <arg name="use_rviz" default="true"/>
 
   <arg name="rviz_config" default="$(find-pkg-share navigation_start)/rviz/kinect_obstacle_debug.rviz"/>
