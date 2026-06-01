@@ -46,7 +46,9 @@
 
   <arg name="use_nav" default="true"/>
   <arg name="nav_use_lidar" default="true"/>
-  <arg name="nav_use_point_cloud" default="false"/>
+  <!-- Activado para que la simulacion use la misma ruta Kinect -> cloud_filter
+       que el robot real al probar evasion de obstaculos altos. -->
+  <arg name="nav_use_point_cloud" default="true"/>
   <arg name="nav_laser_min_x" default="0.20"/>
   <arg name="nav_laser_max_x" default="0.35"/>
   <arg name="nav_laser_min_y" default="-0.22"/>
@@ -151,9 +153,6 @@
     <arg name="laser_max_x" value="$(var nav_laser_max_x)"/>
     <arg name="laser_min_y" value="$(var nav_laser_min_y)"/>
     <arg name="laser_max_y" value="$(var nav_laser_max_y)"/>
-    <arg name="initial_pose_x" value="$(var initial_x)"/>
-    <arg name="initial_pose_y" value="$(var initial_y)"/>
-    <arg name="initial_pose_yaw" value="$(var initial_yaw)"/>
   </include>
 
   <!-- Manipulation suele cargar MoveIt y sensores 3D; apagado por default en sim. -->

@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!--
+    Navegacion real + debug de Kinect/cloud_filter.
+
+    Este launch toma solo lo necesario de justina.launch.xml para mover el
+    robot real y observar la nube filtrada:
+      - hardware_tools: Kinect, laser/base y drivers basicos
+      - robot_state_publisher: modelo/TF del URDF para camera_link
+      - navigation_tools: navegacion completa, incluyendo cloud_filter_node
+      - RViz de debug: mapas, obstaculos, nube filtrada y prismas
+
+    Si el hardware o robot_state_publisher ya estan corriendo por otro launch,
+    usa use_hardware:=false o use_robot_state_publisher:=false para evitar
+    duplicados.
+  -->
+
+  <arg name="use_sim_time" default="false"/>
+  <arg name="namespace_hardware" default="hardware"/>
+  <arg name="namespace_navigation" default="navigation"/>
+  <arg name="namespace_vision" default="vision"/>
+
+  <arg name="use_hardware" default="true"/>
+  <arg name="use_takeshi" default="false"/>
+  <arg name="use_robot_state_publisher" default="true"/>
+  <arg name="use_nav" default="true"/>
+  <arg name="use_lidar" default="true"/>
+  <arg name="use_point_cloud" default="true"/>
+  <arg name="use_vision" default="false"/>
+  <arg name="use_rviz" default="true"/>
+
+  <arg name="rviz_config" default="$(find-pkg-share navigation_start)/rviz/kinect_obstacle_debug.rviz"/>
+
+  <!-- Ventana del laser para obstaculos bajos. Defaults iguales a navigation_start. -->
+  <arg name="laser_min_x" default="0.17"/>
+  <arg name="laser_max_x" default="0.55"/>
+  <arg name="laser_min_y" default="-0.35"/>
+  <arg name="laser_max_y" default="0.35"/>
+
+  <let name="justina_share" value="$(find-pkg-share justina_description)"/>
+
+  <!-- Modelo del robot para TF del Kinect y RobotModel en RViz. -->
+  <node pkg="robot_state_publisher"
+        exec="robot_state_publisher"
+        name="robot_state_publisher"
+        output="screen"
+        if="$(var use_robot_state_publisher)">
+    <param name="use_sim_time" value="$(var use_sim_time)"/>
+    <param name="robot_description" value="$(command 'cat $(var justina_share)/urdf/justina.urdf')"/>
+    <remap from="joint_states" to="/hardware/joint_states"/>
+    <remap from="robot_description" to="/hardware/robot_description"/>
+  </node>
+
+  <!-- Hardware real: publica /hardware/camera/points, /hardware/base/scan,
+       /hardware/base/odom y recibe /hardware/base/cmd_vel. -->
+  <include file="$(find-pkg-share hardware_tools)/launch/hardware.launch.xml"
+           if="$(var use_hardware)">
+    <arg name="namespace" value="$(var namespace_hardware)"/>
+    <arg name="use_takeshi" value="$(var use_takeshi)"/>
+  </include>
+
+  <!-- Navegacion real. Dentro de navigation_start se lanza:
+       cloud_filter_node -> obstacle_detector -> map_augmenter -> planners. -->
+  <include file="$(find-pkg-share navigation_tools)/launch/navigation.launch.xml"
+           if="$(var use_nav)">
+    <arg name="namespace" value="$(var namespace_navigation)"/>
+    <arg name="use_sim_time" value="$(var use_sim_time)"/>
+    <arg name="use_lidar" value="$(var use_lidar)"/>
+    <arg name="use_point_cloud" value="$(var use_point_cloud)"/>
+    <arg name="laser_min_x" value="$(var laser_min_x)"/>
+    <arg name="laser_max_x" value="$(var laser_max_x)"/>
+    <arg name="laser_min_y" value="$(var laser_min_y)"/>
+    <arg name="laser_max_y" value="$(var laser_max_y)"/>
+  </include>
+
+  <!-- Vision no es necesaria para evadir obstaculos: cloud_filter usa la nube
+       cruda del Kinect desde hardware. Se deja opcional para pruebas donde
+       tambien quieras correr reconocimiento, pero apagada por default para no
+       cargar CPU ni competir por /hardware/camera/points. -->
+  <include file="$(find-pkg-share vision_tools)/launch/vision.launch.xml"
+           if="$(var use_vision)">
+    <arg name="namespace" value="$(var namespace_vision)"/>
+  </include>
+
+  <node pkg="rviz2"
+        exec="rviz2"
+        name="rviz2_kinect_nav_debug"
+        output="screen"
+        if="$(var use_rviz)"
+        args="-d $(var rviz_config)"/>
+
+</launch>
