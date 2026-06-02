@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- ===================== -->
+  <!--   Global Arguments    -->
+  <!-- ===================== -->
+  <arg name="use_sim_time" default="false"/>
+
+  <arg name="namespace_supervisor"   default="supervisor"/>
+  <arg name="namespace_executor"     default="executor"/>
+  <arg name="namespace_planning"     default="planning"/>
+  <arg name="namespace_navigation"   default="navigation"/>   <!-- not used but kept for compatibility -->
+  <arg name="namespace_manipulation" default="manipulation"/>
+  <arg name="namespace_hardware"     default="hardware"/>
+  <arg name="namespace_hri"          default="hri"/>
+  <arg name="namespace_vision"       default="vision"/>
+  <arg name="namespace_tasks"        default="tasks"/>
+
+  <!-- ===================== -->
+  <!--      Supervisor       -->
+  <!-- ===================== -->
+  <include file="$(find-pkg-share supervisor_manager)/launch/supervisor.launch.xml">
+    <arg name="namespace" value="$(var namespace_supervisor)"/>
+  </include>
+
+  <!-- ===================== -->
+  <!--       Executor        -->
+  <!-- ===================== -->
+  <include file="$(find-pkg-share executor_tools)/launch/executor.launch.xml">
+    <arg name="namespace" value="$(var namespace_executor)"/>
+  </include>
+
+  <!-- ===================== -->
+  <!--       Planning        -->
+  <!-- ===================== -->
+  <include file="$(find-pkg-share planning_tools)/launch/planning.launch.xml">
+    <arg name="namespace" value="$(var namespace_planning)"/>
+    <arg name="use_sim_time" value="$(var use_sim_time)"/>
+  </include>
+
+  <!-- ===================== -->
+  <!--     Manipulation      -->
+  <!-- ===================== -->
+  <include file="$(find-pkg-share manipulation_tools)/launch/manipulation.launch.xml">
+    <arg name="namespace" value="$(var namespace_manipulation)"/>
+  </include>
+
+  <!-- ===================== -->
+  <!--       Hardware        -->
+  <!-- ===================== -->
+  <include file="$(find-pkg-share hardware_tools)/launch/hardware.launch.xml">
+    <arg name="namespace" value="$(var namespace_hardware)"/>
+  </include>
+
+  <!-- ===================== -->
+  <!--         HRI           -->
+  <!-- ===================== -->
+  <include file="$(find-pkg-share hri_tools)/launch/hri.launch.xml">
+    <arg name="namespace" value="$(var namespace_hri)"/>
+  </include>
+
+  <!-- ===================== -->
+  <!--        Vision         -->
+  <!-- ===================== -->
+  <include file="$(find-pkg-share vision_tools)/launch/vision.launch.xml">
+    <arg name="namespace" value="$(var namespace_vision)"/>
+  </include>
+
+  <!-- ===================== -->
+  <!--   Mapless Navigation  -->  <!-- replaces the normal navigation stack -->
+  <!-- ===================== -->
+  <include file="$(find-pkg-share mapless_nav)/launch/mapless.launch.xml"/>
+
+  <!-- ===================== -->
+  <!--        RViz2          -->
+  <!-- ===================== -->
+  <node pkg="rviz2"
+        exec="rviz2"
+        name="rviz2"
+        output="screen"
+        args="-d $(find-pkg-share surge_et_ambula)/rviz/justina_mapless.rviz"/>
+
+</launch>
