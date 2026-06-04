@@ -7,72 +7,61 @@
 
   <arg name="use_sim_time" default="false"/>
 
-  <arg name="namespace_supervisor"   default="supervisor"/>
-  <arg name="namespace_executor"     default="executor"/>
-  <arg name="namespace_planning"     default="planning"/>
-  <arg name="namespace_navigation"   default="navigation"/>
-  <arg name="namespace_manipulation" default="manipulation"/>
-  <arg name="namespace_hardware"     default="hardware"/>
-  <arg name="namespace_hri"          default="hri"/>
-  <arg name="namespace_vision"          default="vision"/>
-  <arg name="namespace_tasks"          default="tasks"/>
+  <arg name="namespace_supervisor"    default="supervisor"/>
+  <arg name="namespace_executor"      default="executor"/>
+  <arg name="namespace_planning"      default="planning"/>
+  <arg name="namespace_navigation"    default="navigation"/>
+  <arg name="namespace_manipulation"  default="manipulation"/>
+  <arg name="namespace_hardware"      default="hardware"/>
+  <arg name="namespace_hri"           default="hri"/>
+  <arg name="namespace_vision"        default="vision"/>
+  <arg name="namespace_tasks"         default="tasks"/>
+  <arg name="namespace_knowledge"     default="knowledge"/>
 
-  <arg name="use_nav" default="true"/>
+
+  <arg name="use_nav"   default="true"/>
+  <arg name="mapless"   default="false"/>  <!-- true = SLAM mode, false = AMCL with pre-built map -->
   <arg name="use_takeshi" default="true"/>
 
   <!-- ===================== -->
   <!--      Supervisor       -->
   <!-- ===================== -->
-  <include file="$(find-pkg-share supervisor_manager)/launch/supervisor.launch.xml">
+  <!--include file="$(find-pkg-share supervisor_manager)/launch/supervisor.launch.xml">
     <arg name="namespace" value="$(var namespace_supervisor)"/>
-  </include>
+  </include-->
  
   <!-- ===================== -->
   <!--       Executor        -->
   <!-- ===================== -->
-  <include file="$(find-pkg-share executor_tools)/launch/executor.launch.xml">
+  <!--include file="$(find-pkg-share executor_tools)/launch/executor.launch.xml">
     <arg name="namespace" value="$(var namespace_executor)"/>
-  </include>
+  </include-->
 
   <!-- ===================== -->
   <!--       Planning        -->
   <!-- ===================== -->
-  <include file="$(find-pkg-share planning_tools)/launch/planning.launch.xml">
+  <!--include file="$(find-pkg-share planning_tools)/launch/planning.launch.xml">
     <arg name="namespace" value="$(var namespace_planning)"/>
     <arg name="use_sim_time" value="$(var use_sim_time)"/>
-  </include>
+  </include-->
 
   <!-- ===================== -->
   <!--      Navigation       -->
   <!-- ===================== -->
-  
-  <include file="$(find-pkg-share navigation_start)/launch/navigation_takeshi.launch.xml"
-           if="$(var use_nav)">
-    <arg name="namespace_nav" value="$(var namespace_navigation)"/>
-    <arg name="use_sim_time" value="$(var use_sim_time)"/>
-  </include>
+  <group if="$(var use_nav)">
+    <include file="$(find-pkg-share navigation_start)/launch/navigation_takeshi_amcl.launch.xml"
+             unless="$(var mapless)">
+      <arg name="namespace_nav" value="$(var namespace_navigation)"/>
+      <arg name="use_sim_time"  value="$(var use_sim_time)"/>
+    </include>
 
+    <include file="$(find-pkg-share navigation_start)/launch/navigation_takeshi_slam.launch.xml"
+             if="$(var mapless)">
+      <arg name="namespace_nav" value="$(var namespace_navigation)"/>
+      <arg name="use_sim_time"  value="$(var use_sim_time)"/>
+    </include>
+  </group>
 
- <!-- <include file="$(find-pkg-share navigation_start)/launch/slam_navigation_takeshi.launch.xml"
-           if="$(var use_nav)">
-    <arg name="namespace_nav" value="$(var namespace_navigation)"/>
-    <arg name="use_sim_time" value="$(var use_sim_time)"/>
-    <arg name="use_slam" value="true"/>
-  </include> -->
-
-    <node
-      pkg="locations_manager"
-      exec="locations_manager_node"
-      name="locations_manager_node"
-      output="screen"
-    />
-
-    <node
-      pkg="nav_controller"
-      exec="nav_controller_node"
-      name="nav_controller_node"
-      output="screen"
-      />
 
   <!-- ===================== -->
   <!--     Manipulation      -->
@@ -92,27 +81,31 @@
   <!-- ===================== -->
   <!--         HRI           -->
   <!-- ===================== -->
-  <include file="$(find-pkg-share hri_tools)/launch/hri.launch.xml">
+  <!--include file="$(find-pkg-share hri_tools)/launch/hri.launch.xml">
     <arg name="namespace" value="$(var namespace_hri)"/>
     <arg name="use_takeshi" value="$(var use_takeshi)"/>
-  </include>
+  </include-->
 
 
 
   <!-- ===================== -->
   <!--       Vision          -->
   <!-- ===================== -->
-  <include file="$(find-pkg-share vision_tools)/launch/vision.launch.xml">
+  <!--include file="$(find-pkg-share vision_tools)/launch/vision.launch.xml">
     <arg name="namespace" value="$(var namespace_vision)"/>
-  </include>
+  </include-->
+
 
 
   <!-- ===================== -->
-  <!--       Tasks          -->
+  <!--      Knowledge        -->
   <!-- ===================== -->
-<include file="$(find-pkg-share executor_tools)/launch/tasks.launch.xml">
-  <arg name="namespace" value="$(var namespace_tasks)"/>
-</include>
+  <!--include file="$(find-pkg-share knowledge_tools)/launch/knowledge.launch.xml">
+    <arg name="namespace" value="$(var namespace_knowledge)"/>
+  </include-->
+  
+
+
   <!-- ===================== -->
   <!--        RViz2          -->
   <!-- ===================== -->
@@ -121,7 +114,7 @@
         name="rviz2"
         output="screen"
         args="-d $(find-pkg-share surge_et_ambula)/rviz/justina.rviz">
-      <remap from="/hardware/base/robot_description" to="/robot_description"/>
+      <remap from="/hardware/robot_description" to="/robot_description"/>
   </node>
 
 </launch>
