@@ -19,6 +19,7 @@
   <arg name="namespace_knowledge"          default="knowledge"/>
 
   <arg name="use_nav" default="true"/>
+  <arg name="mapless" default="false"/>  <!-- true = SLAM mode, false = AMCL with pre-built map -->
 
   <!-- ===================== -->
   <!--      Supervisor       -->
@@ -45,11 +46,19 @@
   <!-- ===================== -->
   <!--      Navigation       -->
   <!-- ===================== -->
-  <include file="$(find-pkg-share navigation_tools)/launch/navigation.launch.xml"
-           if="$(var use_nav)">
-    <arg name="namespace_nav" value="$(var namespace_navigation)"/>
-    <arg name="use_sim_time" value="$(var use_sim_time)"/>
-  </include>
+  <group if="$(var use_nav)">
+    <include file="$(find-pkg-share navigation_start)/launch/navigation_justina_amcl.launch.xml"
+             unless="$(var mapless)">
+      <arg name="namespace_nav" value="$(var namespace_navigation)"/>
+      <arg name="use_sim_time"  value="$(var use_sim_time)"/>
+    </include>
+
+    <include file="$(find-pkg-share navigation_start)/launch/navigation_justina_slam.launch.xml"
+             if="$(var mapless)">
+      <arg name="namespace_nav" value="$(var namespace_navigation)"/>
+      <arg name="use_sim_time"  value="$(var use_sim_time)"/>
+    </include>
+  </group>
 
   <!-- ===================== -->
   <!--     Manipulation      -->
