@@ -51,8 +51,8 @@
   <arg name="nav_use_point_cloud" default="true"/>
   <arg name="nav_laser_min_x" default="0.20"/>
   <arg name="nav_laser_max_x" default="0.35"/>
-  <arg name="nav_laser_min_y" default="-0.22"/>
-  <arg name="nav_laser_max_y" default="0.22"/>
+  <arg name="nav_laser_min_y" default="-0.35"/>
+  <arg name="nav_laser_max_y" default="0.35"/>
   <arg name="use_kinect" default="true"/>
   <arg name="use_kinect_motor" default="true"/>
   <arg name="use_manipulation" default="false"/>

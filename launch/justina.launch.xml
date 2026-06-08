@@ -19,9 +19,6 @@
   <arg name="namespace_knowledge"          default="knowledge"/>
 
   <arg name="use_nav" default="true"/>
-  <arg name="nav_use_pot_fields" default="true"/>
-  <arg name="nav_cloud_downsampling" default="1"/>
-  <arg name="nav_cloud_points_threshold" default="20"/>
 
   <!-- ===================== -->
   <!--      Supervisor       -->
@@ -53,9 +50,6 @@
     <arg name="namespace" value="$(var namespace_navigation)"/>
     <arg name="namespace_hardware" value="$(var namespace_hardware)"/>
     <arg name="use_sim_time" value="$(var use_sim_time)"/>
-    <arg name="use_pot_fields" value="$(var nav_use_pot_fields)"/>
-    <arg name="cloud_downsampling" value="$(var nav_cloud_downsampling)"/>
-    <arg name="cloud_points_threshold" value="$(var nav_cloud_points_threshold)"/>
   </include>
 
   <!-- ===================== -->
