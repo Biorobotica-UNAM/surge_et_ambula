@@ -81,10 +81,10 @@
   <!-- ===================== -->
   <!--         HRI           -->
   <!-- ===================== -->
-  <!--include file="$(find-pkg-share hri_tools)/launch/hri.launch.xml">
+  <include file="$(find-pkg-share hri_tools)/launch/hri.launch.xml">
     <arg name="namespace" value="$(var namespace_hri)"/>
     <arg name="use_takeshi" value="$(var use_takeshi)"/>
-  </include-->
+  </include>
 
 
 
