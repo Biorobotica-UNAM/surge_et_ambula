@@ -170,7 +170,7 @@
   <!-- Vision suele esperar camara real; apagado por default en sim. -->
   <include file="$(find-pkg-share vision_tools)/launch/vision.launch.xml"
            if="$(var use_vision)">
-    <arg name="namespace" value="$(var namespace_vision)"/>
+    <arg name="namespace_vision" value="$(var namespace_vision)"/>
   </include>
 
   <!-- Knowledge -->
