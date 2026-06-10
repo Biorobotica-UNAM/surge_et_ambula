@@ -63,7 +63,7 @@
   <!--        Vision         -->
   <!-- ===================== -->
   <include file="$(find-pkg-share vision_tools)/launch/vision.launch.xml">
-    <arg name="namespace" value="$(var namespace_vision)"/>
+    <arg name="namespace_vision" value="$(var namespace_vision)"/>
   </include>
 
   <!-- ===================== -->
