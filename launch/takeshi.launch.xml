@@ -27,14 +27,18 @@
   <!-- ===================== -->
   <!--      Supervisor       -->
   <!-- ===================== -->
-  <include file="$(find-pkg-share supervisor_remake)/launch/supervisor.launch.xml">
-    <arg name="plan" value="$(var plan)"/>
-  </include>
+  <group>
+    <include file="$(find-pkg-share supervisor_remake)/launch/supervisor.launch.xml">
+      <arg name="plan" value="$(var plan)"/>
+    </include>
+  </group>
 
   <!-- ===================== -->
   <!--       Executor        -->
   <!-- ===================== -->
-  <include file="$(find-pkg-share executor_remake)/launch/executor.launch.xml"/>
+  <group>
+    <include file="$(find-pkg-share executor_remake)/launch/executor.launch.xml"/>
+  </group>
 
   <!-- ===================== -->
   <!--       Planning        -->
