@@ -94,9 +94,9 @@
   <!-- ===================== -->
   <!--       Vision          -->
   <!-- ===================== -->
-  <!--include file="$(find-pkg-share vision_tools)/launch/vision.launch.xml">
+  <include file="$(find-pkg-share vision_tools)/launch/vision.launch.xml">
     <arg name="namespace" value="$(var namespace_vision)"/>
-  </include-->
+  </include>
 
 
 
