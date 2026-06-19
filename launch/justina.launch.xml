@@ -20,6 +20,7 @@
 
   <arg name="use_nav" default="true"/>
   <arg name="mapless" default="false"/>  <!-- true = SLAM mode, false = AMCL with pre-built map -->
+  <arg name="plan_name" default="default_plan"/> <!-- Este argumento se propagará a Planning y CLIPS -->
 
   <!-- ===================== -->
   <!--      Supervisor       -->
@@ -41,6 +42,7 @@
   <include file="$(find-pkg-share planning_tools)/launch/planning.launch.xml">
     <arg name="namespace" value="$(var namespace_planning)"/>
     <arg name="use_sim_time" value="$(var use_sim_time)"/>
+    <arg name="plan_name" value="$(var plan_name)"/>
   </include>
 
   <!-- ===================== -->
