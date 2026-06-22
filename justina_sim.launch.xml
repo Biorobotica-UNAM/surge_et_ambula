@@ -1,0 +1,198 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!--
+    Justina completa + simulacion simple de base.
+
+    Este launch conserva la mayoria de modulos de justina.launch.xml:
+      - supervisor
+      - executor
+      - planning
+      - navigation
+      - manipulation
+      - HRI
+      - vision
+      - knowledge
+      - RViz
+
+    La diferencia es que NO se lanza hardware_tools. En su lugar se lanza:
+      - simple_justina_sim.py
+      - robot_state_publisher
+      - map_to_odom
+
+    El simulador simple:
+      - Escucha /hardware/base/cmd_vel.
+      - Publica /hardware/base/odom.
+      - Publica TF odom -> base_link.
+      - Publica /hardware/joint_states.
+      - Publica /hardware/base/scan simulado contra /navigation/map.
+
+    Por default usa tiempo real, igual que el launch fisico. Mantener un solo
+    reloj evita TF_OLD_DATA cuando se mezclan nodos de navegacion, HRI o
+    supervisor que no usan /clock de forma consistente.
+  -->
+
+  <arg name="use_sim_time" default="false"/>
+
+  <arg name="namespace_supervisor"   default="supervisor"/>
+  <arg name="namespace_executor"     default="executor"/>
+  <arg name="namespace_planning"     default="planning"/>
+  <arg name="namespace_navigation"   default="navigation"/>
+  <arg name="namespace_manipulation" default="manipulation"/>
+  <arg name="namespace_hri"          default="hri"/>
+  <arg name="namespace_vision"       default="vision"/>
+  <arg name="namespace_knowledge"    default="knowledge"/>
+  <arg name="namespace_hardware"     default="hardware"/>
+
+  <arg name="use_nav" default="true"/>
+  <arg name="nav_use_lidar" default="true"/>
+  <!-- Activado para que la simulacion use la misma ruta Kinect -> cloud_filter
+       que el robot real al probar evasion de obstaculos altos. -->
+  <arg name="nav_use_point_cloud" default="true"/>
+  <arg name="nav_laser_min_x" default="0.20"/>
+  <arg name="nav_laser_max_x" default="0.35"/>
+  <arg name="nav_laser_min_y" default="-0.35"/>
+  <arg name="nav_laser_max_y" default="0.35"/>
+  <arg name="use_kinect" default="true"/>
+  <arg name="use_kinect_motor" default="true"/>
+  <arg name="use_manipulation" default="false"/>
+  <arg name="manipulation_use_cloud_filter" default="false"/>
+  <arg name="sim_arm_motion_min_duration_sec" default="0.08"/>
+  <arg name="sim_arm_motion_max_duration_sec" default="1.5"/>
+  <arg name="sim_arm_motion_steps" default="16"/>
+  <arg name="use_vision" default="true"/>
+  <arg name="use_hri" default="true"/>
+
+  <arg name="initial_x" default="0.0"/>
+  <arg name="initial_y" default="0.0"/>
+  <arg name="initial_yaw" default="0.013"/>
+  <arg name="laser_beams" default="361"/>
+  <arg name="laser_range_max" default="6.0"/>
+  <arg name="laser_unknown_is_obstacle" default="true"/>
+  <arg name="laser_publish_max_range" default="false"/>
+
+  <let name="justina_share" value="$(find-pkg-share justina_description)"/>
+
+  <!-- Simula la base movil y sensores minimos esperados por navegacion. -->
+  <node pkg="justina_description"
+        exec="simple_justina_sim.py"
+        name="simple_justina_sim"
+        output="screen">
+    <param name="use_sim_time" value="false"/>
+    <param name="initial_x" value="$(var initial_x)"/>
+    <param name="initial_y" value="$(var initial_y)"/>
+    <param name="initial_yaw" value="$(var initial_yaw)"/>
+    <param name="laser_beams" value="$(var laser_beams)"/>
+    <param name="laser_range_max" value="$(var laser_range_max)"/>
+    <param name="laser_unknown_is_obstacle" value="$(var laser_unknown_is_obstacle)"/>
+    <param name="laser_publish_max_range" value="$(var laser_publish_max_range)"/>
+    <param name="arm_motion_min_duration_sec" value="$(var sim_arm_motion_min_duration_sec)"/>
+    <param name="arm_motion_max_duration_sec" value="$(var sim_arm_motion_max_duration_sec)"/>
+    <param name="arm_motion_steps" value="$(var sim_arm_motion_steps)"/>
+  </node>
+
+  <!-- Publica el modelo del robot y el arbol TF fijo/movil del URDF. -->
+  <node pkg="robot_state_publisher"
+        exec="robot_state_publisher"
+        name="robot_state_publisher"
+        output="screen">
+    <param name="use_sim_time" value="$(var use_sim_time)"/>
+    <param name="robot_description" value="$(command 'cat $(var justina_share)/urdf/justina.urdf')"/>
+    <remap from="joint_states" to="/hardware/joint_states"/>
+    <remap from="robot_description" to="/hardware/robot_description"/>
+  </node>
+
+  <!-- Kinect real montado en el arbol TF de Justina; publica /hardware/camera/points. -->
+  <group if="$(var use_kinect)">
+    <push_ros_namespace namespace="$(var namespace_hardware)"/>
+    <include file="$(find-pkg-share kinect_ros2)/launch/kinect.launch.xml"/>
+  </group>
+
+  <!-- Motor fisico de tilt del Kinect. Escucha /hardware/head/current_pose. -->
+  <node pkg="justina_description"
+        exec="kinect_tilt_motor_node.py"
+        name="kinect_tilt_motor_node"
+        output="screen"
+        if="$(var use_kinect_motor)">
+    <param name="head_pose_topic" value="/hardware/head/current_pose"/>
+    <param name="invert_tilt" value="false"/>
+    <param name="angle_offset_deg" value="0.0"/>
+  </node>
+
+  <!-- Une el mapa global con la odometria simulada: map -> odom -> base_link. -->
+  <node pkg="tf2_ros"
+        exec="static_transform_publisher"
+        name="map_to_odom"
+        args="--x 0 --y 0 --z 0 --roll 0 --pitch 0 --yaw 0 --frame-id map --child-frame-id odom"
+        unless="$(var use_nav)">
+    <param name="use_sim_time" value="$(var use_sim_time)"/>
+  </node>
+
+  <!-- Supervisor -->
+  <include file="$(find-pkg-share supervisor_manager)/launch/supervisor.launch.xml">
+    <arg name="namespace" value="$(var namespace_supervisor)"/>
+  </include>
+
+  <!-- Executor -->
+  <include file="$(find-pkg-share executor_tools)/launch/executor.launch.xml">
+    <arg name="namespace" value="$(var namespace_executor)"/>
+  </include>
+
+  <!-- Planning -->
+  <include file="$(find-pkg-share planning_tools)/launch/planning.launch.xml">
+    <arg name="namespace" value="$(var namespace_planning)"/>
+    <arg name="use_sim_time" value="$(var use_sim_time)"/>
+  </include>
+
+  <!--
+    El laser simulado se usa como obstaculo local con una caja frontal pequena.
+    Si los pasillos quedan muy cerrados, reduce nav_laser_max_x/nav_laser_max_y
+    o lanza nav_use_lidar:=false para usar solo el mapa estatico.
+  -->
+  <!-- Navigation: usa el laser simulado; la nube real queda opcional para obstaculos. -->
+  <include file="$(find-pkg-share navigation_tools)/launch/navigation.launch.xml"
+           if="$(var use_nav)">
+    <arg name="namespace" value="$(var namespace_navigation)"/>
+    <arg name="use_sim_time" value="$(var use_sim_time)"/>
+    <arg name="use_lidar" value="$(var nav_use_lidar)"/>
+    <arg name="use_point_cloud" value="$(var nav_use_point_cloud)"/>
+    <arg name="laser_min_x" value="$(var nav_laser_min_x)"/>
+    <arg name="laser_max_x" value="$(var nav_laser_max_x)"/>
+    <arg name="laser_min_y" value="$(var nav_laser_min_y)"/>
+    <arg name="laser_max_y" value="$(var nav_laser_max_y)"/>
+  </include>
+
+  <!-- Manipulation suele cargar MoveIt y sensores 3D; apagado por default en sim. -->
+  <include file="$(find-pkg-share manipulation_tools)/launch/manipulation.launch.xml"
+           if="$(var use_manipulation)">
+    <arg name="namespace" value="$(var namespace_manipulation)"/>
+    <arg name="use_cloud_filter" value="$(var manipulation_use_cloud_filter)"/>
+  </include>
+
+  <!-- HRI opcional. -->
+  <include file="$(find-pkg-share hri_tools)/launch/hri.launch.xml"
+           if="$(var use_hri)">
+    <arg name="namespace" value="$(var namespace_hri)"/>
+  </include>
+
+  <!-- Vision suele esperar camara real; apagado por default en sim. -->
+  <include file="$(find-pkg-share vision_tools)/launch/vision.launch.xml"
+           if="$(var use_vision)">
+    <arg name="namespace_vision" value="$(var namespace_vision)"/>
+  </include>
+
+  <!-- Knowledge -->
+  <include file="$(find-pkg-share knowledge_tools)/launch/knowledge.launch.xml">
+    <arg name="namespace" value="$(var namespace_knowledge)"/>
+  </include>
+
+  <!-- RViz -->
+  <node pkg="rviz2"
+        exec="rviz2"
+        name="rviz2"
+        output="screen"
+        args="-d $(find-pkg-share surge_et_ambula)/rviz/justina.rviz">
+    <param name="use_sim_time" value="$(var use_sim_time)"/>
+  </node>
+
+</launch>
