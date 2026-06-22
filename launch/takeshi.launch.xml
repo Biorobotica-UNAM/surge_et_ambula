@@ -22,31 +22,40 @@
   <arg name="use_nav"     default="true"/>
   <arg name="mapless"     default="false"/>  <!-- true = SLAM mode, false = AMCL with pre-built map -->
   <arg name="use_takeshi" default="true"/>
-  <arg name="plan"        default=""/>       <!-- e.g. plan:=hri  loads plans/hri.yaml -->
+  <arg name="plan_name" default="default_plan"/> <!-- Este argumento se propagará a Planning y CLIPS -->
+
+  <!--arg name="plan"        default=""/-->       <!-- e.g. plan:=hri  loads plans/hri.yaml -->
 
   <!-- ===================== -->
   <!--      Supervisor       -->
   <!-- ===================== -->
-  <group>
+  <!--group>
     <include file="$(find-pkg-share supervisor_remake)/launch/supervisor.launch.xml">
       <arg name="plan" value="$(var plan)"/>
     </include>
-  </group>
+  </group-->
+  <include file="$(find-pkg-share supervisor_manager)/launch/supervisor.launch.xml">
+    <arg name="namespace" value="$(var namespace_supervisor)"/>
+  </include>
 
   <!-- ===================== -->
   <!--       Executor        -->
   <!-- ===================== -->
-  <group>
+  <!--group>
     <include file="$(find-pkg-share executor_remake)/launch/executor.launch.xml"/>
-  </group>
+  </group-->
+  <include file="$(find-pkg-share executor_tools)/launch/executor.launch.xml">
+    <arg name="namespace" value="$(var namespace_executor)"/>
+  </include>
 
   <!-- ===================== -->
   <!--       Planning        -->
   <!-- ===================== -->
-  <!--include file="$(find-pkg-share planning_tools)/launch/planning.launch.xml">
+  <include file="$(find-pkg-share planning_tools)/launch/planning.launch.xml">
     <arg name="namespace" value="$(var namespace_planning)"/>
     <arg name="use_sim_time" value="$(var use_sim_time)"/>
-  </include-->
+    <arg name="plan_name" value="$(var plan_name)"/>
+  </include>
 
   <!-- ===================== -->
   <!--      Navigation       -->
@@ -103,9 +112,9 @@
   <!-- ===================== -->
   <!--      Knowledge        -->
   <!-- ===================== -->
-  <!--include file="$(find-pkg-share knowledge_tools)/launch/knowledge.launch.xml">
+  <include file="$(find-pkg-share knowledge_tools)/launch/knowledge.launch.xml">
     <arg name="namespace" value="$(var namespace_knowledge)"/>
-  </include-->
+  </include>
   
 
 
