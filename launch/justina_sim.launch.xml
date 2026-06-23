@@ -55,7 +55,7 @@
   <arg name="nav_laser_max_y" default="0.35"/>
   <arg name="use_kinect" default="true"/>
   <arg name="use_kinect_motor" default="true"/>
-  <arg name="use_manipulation" default="false"/>
+  <arg name="use_manipulation" default="true"/>
   <arg name="manipulation_use_cloud_filter" default="false"/>
   <arg name="sim_arm_motion_min_duration_sec" default="0.08"/>
   <arg name="sim_arm_motion_max_duration_sec" default="1.5"/>
