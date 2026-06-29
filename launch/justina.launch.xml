@@ -21,12 +21,14 @@
   <arg name="use_nav" default="true"/>
   <arg name="mapless" default="false"/>  <!-- true = SLAM mode, false = AMCL with pre-built map -->
   <arg name="plan_name" default="default_plan"/> <!-- Este argumento se propagará a Planning y CLIPS -->
+  <arg name="ask_data_confirmation_enabled" default="true"/>
 
   <!-- ===================== -->
   <!--      Supervisor       -->
   <!-- ===================== -->
   <include file="$(find-pkg-share supervisor_manager)/launch/supervisor.launch.xml">
     <arg name="namespace" value="$(var namespace_supervisor)"/>
+    <arg name="ask_data_confirmation_enabled" value="$(var ask_data_confirmation_enabled)"/>
   </include>
 
   <!-- ===================== -->
@@ -108,4 +110,3 @@
         args="-d $(find-pkg-share surge_et_ambula)/rviz/justina.rviz"/>
 
 </launch>
-

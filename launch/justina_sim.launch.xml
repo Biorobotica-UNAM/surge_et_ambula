@@ -43,6 +43,7 @@
   <arg name="namespace_vision"       default="vision"/>
   <arg name="namespace_knowledge"    default="knowledge"/>
   <arg name="namespace_hardware"     default="hardware"/>
+  <arg name="ask_data_confirmation_enabled" default="true"/>
 
   <arg name="use_nav" default="true"/>
   <arg name="nav_use_lidar" default="true"/>
@@ -131,6 +132,7 @@
   <!-- Supervisor -->
   <include file="$(find-pkg-share supervisor_manager)/launch/supervisor.launch.xml">
     <arg name="namespace" value="$(var namespace_supervisor)"/>
+    <arg name="ask_data_confirmation_enabled" value="$(var ask_data_confirmation_enabled)"/>
   </include>
 
   <!-- Executor -->
