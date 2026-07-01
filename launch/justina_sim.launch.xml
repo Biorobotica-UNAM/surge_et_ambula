@@ -55,6 +55,9 @@
   <arg name="nav_laser_min_y" default="-0.35"/>
   <arg name="nav_laser_max_y" default="0.35"/>
   <arg name="use_kinect" default="false"/>
+  <arg name="use_xtion" default="false"/>
+  <arg name="mapless" default="false"/>  <!-- true = SLAM mode, false = AMCL with pre-built map -->
+  <arg name="plan_name" default="goals"/> <!-- Este argumento se propagará a Planning y CLIPS -->
   <arg name="use_kinect_motor" default="false"/>
   <arg name="use_manipulation" default="true"/>
   <arg name="manipulation_use_cloud_filter" default="false"/>
@@ -110,7 +113,8 @@
     <node pkg="rclcpp_components"
           exec="component_container"
           name="container"
-          output="screen"/>
+          output="screen"          
+          if="$(var use_xtion)"/>
 
     <load_composable_node target="/hardware/container">
       <composable_node
@@ -195,17 +199,12 @@
     o lanza nav_use_lidar:=false para usar solo el mapa estatico.
   -->
   <!-- Navigation: usa el laser simulado; la nube real queda opcional para obstaculos. -->
-  <include file="$(find-pkg-share navigation_tools)/launch/navigation.launch.xml"
-           if="$(var use_nav)">
-    <arg name="namespace" value="$(var namespace_navigation)"/>
-    <arg name="use_sim_time" value="$(var use_sim_time)"/>
-    <arg name="use_lidar" value="$(var nav_use_lidar)"/>
-    <arg name="use_point_cloud" value="$(var nav_use_point_cloud)"/>
-    <arg name="laser_min_x" value="$(var nav_laser_min_x)"/>
-    <arg name="laser_max_x" value="$(var nav_laser_max_x)"/>
-    <arg name="laser_min_y" value="$(var nav_laser_min_y)"/>
-    <arg name="laser_max_y" value="$(var nav_laser_max_y)"/>
-  </include>
+ <include file="$(find-pkg-share navigation_start)/launch/navigation_justina_amcl.launch.xml"
+             unless="$(var mapless)">
+      <arg name="namespace_nav" value="$(var namespace_navigation)"/>
+      <arg name="use_sim_time"  value="$(var use_sim_time)"/>
+    </include>
+
 
   <!-- Manipulation suele cargar MoveIt y sensores 3D; apagado por default en sim. -->
   <include file="$(find-pkg-share manipulation_tools)/launch/manipulation.launch.xml"
