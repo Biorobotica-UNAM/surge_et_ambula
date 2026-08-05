@@ -19,12 +19,16 @@
   <arg name="namespace_knowledge"          default="knowledge"/>
 
   <arg name="use_nav" default="true"/>
+  <arg name="mapless" default="false"/>  <!-- true = SLAM mode, false = AMCL with pre-built map -->
+  <arg name="plan_name" default="default_plan"/> <!-- Este argumento se propagará a Planning y CLIPS -->
+  <arg name="ask_data_confirmation_enabled" default="true"/>
 
   <!-- ===================== -->
   <!--      Supervisor       -->
   <!-- ===================== -->
   <include file="$(find-pkg-share supervisor_manager)/launch/supervisor.launch.xml">
     <arg name="namespace" value="$(var namespace_supervisor)"/>
+    <arg name="ask_data_confirmation_enabled" value="$(var ask_data_confirmation_enabled)"/>
   </include>
 
   <!-- ===================== -->
@@ -40,16 +44,25 @@
   <include file="$(find-pkg-share planning_tools)/launch/planning.launch.xml">
     <arg name="namespace" value="$(var namespace_planning)"/>
     <arg name="use_sim_time" value="$(var use_sim_time)"/>
+    <arg name="plan_name" value="$(var plan_name)"/>
   </include>
 
   <!-- ===================== -->
   <!--      Navigation       -->
   <!-- ===================== -->
-  <include file="$(find-pkg-share navigation_tools)/launch/navigation.launch.xml"
-           if="$(var use_nav)">
-    <arg name="namespace_nav" value="$(var namespace_navigation)"/>
-    <arg name="use_sim_time" value="$(var use_sim_time)"/>
-  </include>
+  <group if="$(var use_nav)">
+    <include file="$(find-pkg-share navigation_start)/launch/navigation_justina_amcl.launch.xml"
+             unless="$(var mapless)">
+      <arg name="namespace_nav" value="$(var namespace_navigation)"/>
+      <arg name="use_sim_time"  value="$(var use_sim_time)"/>
+    </include>
+
+    <include file="$(find-pkg-share navigation_start)/launch/navigation_justina_slam.launch.xml"
+             if="$(var mapless)">
+      <arg name="namespace_nav" value="$(var namespace_navigation)"/>
+      <arg name="use_sim_time"  value="$(var use_sim_time)"/>
+    </include>
+  </group>
 
   <!-- ===================== -->
   <!--     Manipulation      -->
@@ -97,4 +110,3 @@
         args="-d $(find-pkg-share surge_et_ambula)/rviz/justina.rviz"/>
 
 </launch>
-

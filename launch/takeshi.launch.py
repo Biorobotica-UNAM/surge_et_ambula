@@ -32,6 +32,7 @@ def generate_launch_description():
 
     use_nav = LaunchConfiguration('use_nav')
     use_takeshi = LaunchConfiguration('use_takeshi')
+    ask_data_confirmation_enabled = LaunchConfiguration('ask_data_confirmation_enabled')
 
     # Delays entre etapas
     delay_nav    = LaunchConfiguration('delay_nav')
@@ -63,6 +64,7 @@ def generate_launch_description():
             ),
             launch_arguments={
                 'namespace': namespace_supervisor,
+                'ask_data_confirmation_enabled': ask_data_confirmation_enabled,
             }.items()
         ),
 
@@ -217,6 +219,7 @@ def generate_launch_description():
         DeclareLaunchArgument('namespace_hri',          default_value='hri'),
         DeclareLaunchArgument('namespace_vision',       default_value='vision'),
         DeclareLaunchArgument('namespace_tasks',        default_value='tasks'),
+        DeclareLaunchArgument('ask_data_confirmation_enabled', default_value='true'),
 
         DeclareLaunchArgument('use_nav', default_value='true'),
 
