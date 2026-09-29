@@ -59,13 +59,13 @@
   <arg name="mapless" default="false"/>  <!-- true = SLAM mode, false = AMCL with pre-built map -->
   <arg name="plan_name" default="goals"/> <!-- Este argumento se propagará a Planning y CLIPS -->
   <arg name="use_kinect_motor" default="false"/>
-  <arg name="use_manipulation" default="true"/>
+  <arg name="use_manipulation" default="false"/>
   <arg name="manipulation_use_cloud_filter" default="false"/>
   <arg name="sim_arm_motion_min_duration_sec" default="0.08"/>
   <arg name="sim_arm_motion_max_duration_sec" default="1.5"/>
   <arg name="sim_arm_motion_steps" default="16"/>
-  <arg name="use_vision" default="true"/>
-  <arg name="use_hri" default="true"/>
+  <arg name="use_vision" default="false"/>
+  <arg name="use_hri" default="false"/>
 
   <arg name="initial_x" default="0.0"/>
   <arg name="initial_y" default="0.0"/>
