@@ -16,7 +16,7 @@
       - RViz
 
     La diferencia es que NO se lanza hardware_tools. En su lugar se lanza:
-      - simple_justina_sim.py
+      - simple_justina_sim_node.py
       - robot_state_publisher
       - map_to_odom
 
@@ -78,8 +78,8 @@
   <let name="justina_share" value="$(find-pkg-share justina_description)"/>
 
   <!-- Simula la base movil y sensores minimos esperados por navegacion. -->
-  <node pkg="justina_description"
-        exec="simple_justina_sim.py"
+  <node pkg="justina_sim"
+        exec="simple_justina_sim_node.py"
         name="simple_justina_sim"
         output="screen">
     <param name="use_sim_time" value="false"/>
@@ -106,7 +106,7 @@
     <remap from="robot_description" to="/hardware/robot_description"/>
   </node>
 
-  <!-- Kinect real montado en el arbol TF de Justina; publica /hardware/camera/points. -->
+  <!-- Camera real montado en el arbol TF de Justina; publica /hardware/camera/points. -->
   <group>
     <push_ros_namespace namespace="$(var namespace_hardware)"/>
 
@@ -156,8 +156,8 @@
     </load_composable_node>
   </group>
 
-  <!-- Motor fisico de tilt del Kinect. Escucha /hardware/head/current_pose. -->
-  <node pkg="justina_description"
+  <!-- Motor fisico de tilt del Kinect. Escucha /hardware/head/current_pose, queda inactivo -->
+  <!-- <node pkg="justina_sim"
         exec="kinect_tilt_motor_node.py"
         name="kinect_tilt_motor_node"
         output="screen"
@@ -165,7 +165,7 @@
     <param name="head_pose_topic" value="/hardware/head/current_pose"/>
     <param name="invert_tilt" value="false"/>
     <param name="angle_offset_deg" value="0.0"/>
-  </node>
+  </node> -->
 
   <!-- Une el mapa global con la odometria simulada: map -> odom -> base_link. -->
   <node pkg="tf2_ros"
