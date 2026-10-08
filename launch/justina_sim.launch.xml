@@ -191,6 +191,7 @@
   <include file="$(find-pkg-share planning_tools)/launch/planning.launch.xml">
     <arg name="namespace" value="$(var namespace_planning)"/>
     <arg name="use_sim_time" value="$(var use_sim_time)"/>
+    <arg name="plan_name" value="$(var plan_name)"/>
   </include>
 
   <!--
