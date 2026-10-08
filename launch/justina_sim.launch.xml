@@ -65,7 +65,7 @@
   <arg name="sim_arm_motion_max_duration_sec" default="1.5"/>
   <arg name="sim_arm_motion_steps" default="16"/>
   <arg name="use_vision" default="false"/>
-  <arg name="use_hri" default="false"/>
+  <arg name="use_hri" default="true"/>
 
   <arg name="initial_x" default="0.0"/>
   <arg name="initial_y" default="0.0"/>
