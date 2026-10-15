@@ -33,6 +33,9 @@
   -->
 
   <arg name="use_sim_time" default="false"/>
+  <arg name="use_sim_door" default="true"/>
+  <arg name="sim_door_open" default="true"/>
+  <arg name="sim_door_closed_checks" default="0"/>
 
   <arg name="namespace_supervisor"   default="supervisor"/>
   <arg name="namespace_executor"     default="executor"/>
@@ -78,6 +81,12 @@
   <let name="justina_share" value="$(find-pkg-share justina_description)"/>
 
   <!-- Simula la base movil y sensores minimos esperados por navegacion. -->
+  <node pkg="justina_sim" exec="door_sim_node.py" name="door_sim"
+        output="screen" if="$(var use_sim_door)">
+    <param name="door_open" value="$(var sim_door_open)"/>
+    <param name="closed_checks_before_open" value="$(var sim_door_closed_checks)"/>
+  </node>
+
   <node pkg="justina_sim"
         exec="simple_justina_sim_node.py"
         name="simple_justina_sim"
