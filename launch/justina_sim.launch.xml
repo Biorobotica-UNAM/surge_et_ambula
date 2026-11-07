@@ -59,6 +59,7 @@
   <arg name="nav_laser_max_y" default="0.35"/>
   <arg name="use_kinect" default="false"/>
   <arg name="use_xtion" default="false"/>
+  <arg name="blank_map" default="false"/>
   <arg name="mapless" default="false"/>  <!-- true = SLAM mode, false = AMCL with pre-built map -->
   <arg name="plan_name" default="goals"/> <!-- Este argumento se propagará a Planning y CLIPS -->
   <arg name="use_kinect_motor" default="false"/>
@@ -116,7 +117,7 @@
   </node>
 
   <!-- Camera real montado en el arbol TF de Justina; publica /hardware/camera/points. -->
-  <group>
+  <group if="$(var use_xtion)">
     <push_ros_namespace namespace="$(var namespace_hardware)"/>
 
     <node pkg="rclcpp_components"
@@ -209,11 +210,33 @@
     o lanza nav_use_lidar:=false para usar solo el mapa estatico.
   -->
   <!-- Navigation: usa el laser simulado; la nube real queda opcional para obstaculos. -->
- <include file="$(find-pkg-share navigation_start)/launch/navigation_justina_amcl.launch.xml"
+  <group if="$(var use_nav)">
+    <let name="sim_map" value="$(find-pkg-share navigation_start)/maps/maps/lab_2026/map.yaml"/>
+    <let name="sim_prohibition_map" value="$(find-pkg-share navigation_start)/maps/prohibition_maps/lab_2026/map.yaml"/>
+    <let name="sim_map" value="$(find-pkg-share navigation_start)/maps/maps/blank/map.yaml" if="$(var blank_map)"/>
+    <let name="sim_prohibition_map" value="$(find-pkg-share navigation_start)/maps/prohibition_maps/blank/map.yaml" if="$(var blank_map)"/>
+    <include file="$(find-pkg-share navigation_start)/launch/navigation_justina_amcl.launch.xml"
              unless="$(var mapless)">
       <arg name="namespace_nav" value="$(var namespace_navigation)"/>
-      <arg name="use_sim_time"  value="$(var use_sim_time)"/>
+      <arg name="use_sim_time" value="$(var use_sim_time)"/>
+      <arg name="static_map_file" value="$(var sim_map)"/>
+      <arg name="prohibition_map_file" value="$(var sim_prohibition_map)"/>
+      <arg name="use_lidar" value="$(var nav_use_lidar)"/>
+      <arg name="use_point_cloud" value="$(var nav_use_point_cloud)"/>
+      <arg name="laser_min_x" value="$(var nav_laser_min_x)"/>
+      <arg name="laser_max_x" value="$(var nav_laser_max_x)"/>
+      <arg name="laser_min_y" value="$(var nav_laser_min_y)"/>
+      <arg name="laser_max_y" value="$(var nav_laser_max_y)"/>
+      <arg name="amcl_initial_pose_x" value="$(var initial_x)"/>
+      <arg name="amcl_initial_pose_y" value="$(var initial_y)"/>
+      <arg name="amcl_initial_pose_yaw" value="$(var initial_yaw)"/>
     </include>
+    <include file="$(find-pkg-share navigation_start)/launch/navigation_justina_slam.launch.xml"
+             if="$(var mapless)">
+      <arg name="namespace_nav" value="$(var namespace_navigation)"/>
+      <arg name="use_sim_time" value="$(var use_sim_time)"/>
+    </include>
+  </group>
 
 
   <!-- Manipulation suele cargar MoveIt y sensores 3D; apagado por default en sim. -->
